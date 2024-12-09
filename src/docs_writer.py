@@ -72,7 +72,7 @@ def format_results(url: str, result: dict) -> str:
     
     # Add scraped items
     content.append("\nScraped Items:\n")
-    for i, (brand, product, rating, review, sales_info, price) in enumerate(result['data'], 1):
+    for i, (brand, product, rating, review, sales_info, price, sustainability) in enumerate(result['data'], 1):
         content.append(f"\nItem {i}:\n")
         content.append(f"Brand: {brand}\n")
         content.append(f"Product: {product}\n")
@@ -80,6 +80,7 @@ def format_results(url: str, result: dict) -> str:
         content.append(f"Review: {review}\n")
         content.append(f"Sales Info: {sales_info}\n")
         content.append(f"Price: {price}\n")
+        content.append(f"Sustainability: {sustainability if '-' == sustainability else "\n"+ sustainability}\n")
     
     content.append("\n" + "="*50 + "\n")
     return "".join(content)

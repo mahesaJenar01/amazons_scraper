@@ -1,16 +1,11 @@
 import time
+from .element import *
 from typing import List, Dict
 from datetime import datetime
 from selenium import webdriver
-from .prices import get_prices
-from .rating import get_rating
-from .review import get_review
 from .timing_stats import TimingStats
-from .brand_name import get_brand_name
 from .setup_driver import setup_driver
-from .sales_info import get_sales_info
 from .retry_manager import RetryManager
-from .product_name import get_product_name
 from selenium.webdriver.support.ui import WebDriverWait
 from .max_data_index import get_max_data_index, check_error_page
 
@@ -101,6 +96,10 @@ def process_urls(driver: webdriver.Chrome, urls: List[str], retry_manager: Retry
                 price = get_prices(driver, i)
                 timing_stats.price_time += time.time() - price_start
                 
+                sustainability_start = time.time()
+                sustainability = get_sustainability(driver, i)
+                timing_stats.sustainability_time += time.time() - sustainability_start
+
                 if brand_name or product_name:
                     timing_stats.total_items += 1
                     item_data.append((
@@ -109,7 +108,8 @@ def process_urls(driver: webdriver.Chrome, urls: List[str], retry_manager: Retry
                         rating if rating else '-',
                         review if review else '-',
                         sales_info if sales_info else '-',
-                        price if price else '-'
+                        price if price else '-', 
+                        sustainability if sustainability else '-'
                     ))
             
             url_total_time = time.time() - url_start_time
