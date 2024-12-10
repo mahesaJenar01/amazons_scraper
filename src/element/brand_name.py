@@ -5,13 +5,23 @@ def get_brand_name(driver: webdriver.Chrome, index: int) -> Optional[str]:
     """Get brand name text for a specific data-index using JavaScript."""
     try:
         script = """
-        const definiteContainer= document.querySelector(`div[data-index="${arguments[0]}"] div.a-section.a-spacing-base div.a-section.a-spacing-small.puis-padding-left-small.puis-padding-right-small`);
+        const definiteContainer= document.querySelector(`div[data-index="${arguments[0]}"] div[data-cy="title-recipe"]`);
 
         if (!definiteContainer) return null;
 
-        const selector= 'div[data-cy="title-recipe"] div.a-row.a-color-secondary h2.a-size-mini.s-line-clamp-1 span.a-size-base-plus.a-color-base';
+        const similarity = 'div.a-row.a-color-secondary h2.a-size-mini.s-line-clamp-1'
+        const selectors = [
+            'span.a-size-base-plus.a-color-base', 
+            'span.a-size-medium.a-color-base'
+        ]
+        let element = null;
 
-        const element = definiteContainer.querySelector(selector);
+        for (const selector of selectors){
+            element = definiteContainer.querySelector(similarity + ' ' + selector)
+
+            if (element) break;
+        }
+
         return element ? element.textContent.trim() : null;
         """
         return driver.execute_script(script, index)

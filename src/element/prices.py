@@ -6,7 +6,7 @@ def get_prices(driver: webdriver.Chrome, index: int) -> Optional[str]:
     try:
         # The definiteContainer is definitely existed at all cost. The rest are possibility. The most commmon is the selector2.
         script = """
-        const definiteContainer= document.querySelector(`div[data-index="${arguments[0]}"] div.a-section.a-spacing-base div.a-section.a-spacing-small.puis-padding-left-small.puis-padding-right-small`);
+        const definiteContainer= document.querySelector(`div[data-index="${arguments[0]}"]`);
 
         if (!definiteContainer) return null;
 
