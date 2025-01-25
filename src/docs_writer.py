@@ -5,6 +5,7 @@ def write_results_to_docs(creds, config, results: Dict[str, dict]):
     """Write scraping results to corresponding Google Docs."""
     service = build('docs', 'v1', credentials=creds)
     
+    list_of_contents = []
     for url, result in results.items():
         doc_id = config.get_doc_id_for_url(url)
         if not doc_id:
@@ -45,13 +46,16 @@ def write_results_to_docs(creds, config, results: Dict[str, dict]):
                 body={'requests': requests}
             ).execute()
             
+            list_of_contents.append(content)
+
             print(f"Results written to document {doc_id}")
-            
         except Exception as e:
             print(f"Error writing to document {doc_id}: {str(e)}")
 
+    return list_of_contents
+
 def format_results(url: str, result: dict) -> str:
-    """Format scraping results as text for Google Docs."""
+    """Format scraping results as text."""
     content = [f"Results for {url}:\n"]
     content.append("="*50 + "\n")
     

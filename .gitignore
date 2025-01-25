@@ -8,3 +8,6 @@ __pycache__/
 # Google credentials
 credentials.json
 token.json
+
+# output
+/output/

@@ -1,7 +1,10 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from src import scrape, get_credentials, write_results_to_docs
+from src import (
+    scrape, get_credentials, 
+    write_results_to_docs, write_product_files
+)
 
 class ScrapingConfig:
     def __init__(self):
@@ -58,8 +61,9 @@ if __name__ == '__main__':
         # Run scraping
         results = scrape(config.get_urls())
         
-        # Write results to Google Docs
-        write_results_to_docs(creds, config, results)
-        
+        # Write results
+        list_of_contents = write_results_to_docs(creds, config, results)
+        write_product_files(list_of_contents)
+
     except Exception as e:
         print(f'Scraping failed: {str(e)}')
